@@ -1,0 +1,22 @@
+{% extends 'core/layouts/base.html' %}
+{% load static %}
+{% block extra_styles %}
+    <link rel="stylesheet" href="{% static 'core/css/index.css' %}">
+{% endblock %}
+{% block title %}
+    Login
+{% endblock %}
+{% block content %}
+    <h1>Login</h1>
+    <hr>
+    <form method="POST" class="border border-success rounded p-3">
+        {% csrf_token %}
+        {{form}}
+        <button class="btn btn-success">Login</button>
+        <p class="small fw-bold mt-2 pt-1 mb-0">No tienes una cuenta? <a href="{% url 'user_register' %}"
+            class="link-danger">Registrate</a></p>
+        </div>
+    </form>
+
+
+{% endblock %}

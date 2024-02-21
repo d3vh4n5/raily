@@ -1,0 +1,30 @@
+{% extends 'core/layouts/base.html' %}
+{% load static %}
+{% block extra_styles %}
+    <link rel="stylesheet" href="{% static 'core/css/index.css' %}">
+{% endblock %}
+{% block title %}
+    Login
+{% endblock %}
+{% block content %}
+    <h1>Registration</h1>
+    <hr>
+    {% for message in messages %}
+        <center class="my-5">
+            <div class="callout text-info-emphasis bg-info-subtle p-4 border-start border-5 border-info-subtle">
+                <i class="fa-solid fa-circle-exclamation"></i>
+                <strong>Message: </strong> 
+
+                    {{ message }}
+
+            </div>
+        </center>
+    {% endfor %}
+    <form method="POST" class="border border-success rounded p-3">
+        {% csrf_token %}
+        {{form}}
+        <button class="btn btn-success">Register</button>
+    </form>
+
+
+{% endblock %}

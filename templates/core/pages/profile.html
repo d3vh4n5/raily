@@ -1,0 +1,45 @@
+{% extends 'core/layouts/base.html' %}
+{% load static %}
+{% block extra_styles %}
+    <link rel="stylesheet" href="{% static 'core/css/index.css' %}">
+{% endblock %}
+{% block title %}
+    Profile
+{% endblock %}
+{% block content %}
+    <h2>Perfil de Usuario</h2>
+    {% if user.is_authenticated %}
+        <p><b>ID de usuario:</b> {{ user.id }}</p>
+        <p><b>Nombre de usuario:</b> {{ user.username }}</p>
+        <p><b>Correo electrónico: </b>{{ user.email }}</p>
+        <p><b>Nombre: </b>{{ user.first_name }}</p>
+        <p><b>Apellido: </b>{{ user.last_name }}</p>
+        <p><b>Fecha de registro:</b> {{ user.date_joined }}</p>
+        {% if user.is_staff %}
+            <hr>
+            <p><i>¡Eres miembro del personal!</i></p>
+        {% endif %}
+        {% if user.is_superuser %}
+            <p><i>¡Eres un superusuario!</i></p>
+            <a href='{% url "admin:index" %}'>developer admin</a>
+        {% endif %}
+        <hr>
+        <h2>Acciones: </h2>
+        <form id="logout-form" method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit"
+              class="btn text-danger"
+              >Cerrar sesión</button>
+        </form>
+        <br>
+        <a href="{% url 'password_change' %}"> Cambiar password </a>
+        <br>
+        <a href="#"> Actualizar email </a>
+
+    {% else %}
+        <p>Debes iniciar sesión para ver tu perfil.</p>
+        <a href="{% url 'login' %}">Iniciar sesión</a>
+    {% endif %}
+
+
+{% endblock %}
