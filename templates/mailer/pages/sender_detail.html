@@ -1,0 +1,14 @@
+{% extends 'mailer/layouts/base.html' %}
+{% load static %}
+{% block extra_styles %}
+    <link rel="stylesheet" href="{% static 'core/css/index.css' %}">
+{% endblock %}
+{% block title %}
+    Sender
+{% endblock %}
+{% block content %}
+    <h1>Sender Detail</h1>
+    <p><strong>Name:</strong> {{ sender.name }}</p>
+    <p><strong>Email:</strong> {{ sender.email }}</p>
+    <p><strong>User:</strong> {{ sender.user.username }}</p>
+{% endblock %}

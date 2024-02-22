@@ -1,0 +1,17 @@
+{% extends 'mailer/layouts/base.html' %}
+{% load static %}
+{% block extra_styles %}
+    <link rel="stylesheet" href="{% static 'core/css/index.css' %}">
+{% endblock %}
+{% block title %}
+    Mailer
+{% endblock %}
+{% block content %}
+    <h1>Mailer</h1>
+    <hr>
+    <p>
+        Esta es una aplicacion para automatizar mails.
+    </p>
+
+
+{% endblock %}

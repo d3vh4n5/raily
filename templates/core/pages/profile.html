@@ -9,7 +9,7 @@
 {% block content %}
     <h2>Perfil de Usuario</h2>
     {% if user.is_authenticated %}
-        <p><b>ID de usuario:</b> {{ user.id }}</p>
+        {% comment %} <p><b>ID de usuario:</b> {{ user.id }}</p> {% endcomment %}
         <p><b>Nombre de usuario:</b> {{ user.username }}</p>
         <p><b>Correo electrónico: </b>{{ user.email }}</p>
         <p><b>Nombre: </b>{{ user.first_name }}</p>

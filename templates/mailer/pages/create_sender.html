@@ -1,0 +1,44 @@
+{% extends 'mailer/layouts/base.html' %}
+{% load static %}
+{% block extra_styles %}
+    <link rel="stylesheet" href="{% static 'core/css/index.css' %}">
+{% endblock %}
+{% block title %}
+    Sender
+{% endblock %}
+{% block content %}
+
+    <h1>Sender</h1>
+    <hr>
+    {% for message in messages %}
+        <center class="my-5">
+            <div class="callout text-info-emphasis bg-info-subtle p-4 border-start border-5 border-info-subtle">
+                <i class="fa-solid fa-circle-exclamation"></i>
+                <strong>Message: </strong> 
+
+                    {{ message }}
+
+            </div>
+        </center>
+    {% endfor %}
+    <div class="text-warning border border-warning p-2 rounded my-3">
+        <p>
+            La contraseña de los mails usados para sender se guardarán directamente 
+            en la base de datos, es decir, sin encriptar, esto se hace para que el 
+            boy pueda acceder a al mail y utilizarlo para los envíos.
+        </p>
+        <p>
+            Es por este motivo que recomendas crear mails nuevos especialmente para 
+            este uso.
+        </p>
+        <p>
+            No nos responsabilizamos por la seguridad de la información de los mismos.
+        </p>
+    </div>
+    <form method="POST" class="border border-success rounded p-3">
+        {% csrf_token %}
+        {{form}}
+        <button class="btn btn-success">Register</button>
+    </form>
+
+{% endblock %}

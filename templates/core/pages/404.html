@@ -1,0 +1,11 @@
+{% extends 'core/layouts/base.html' %}
+{% load static %}
+{% block extra_styles %}
+    <link rel="stylesheet" href="{% static 'core/css/index.css' %}">
+{% endblock %}
+{% block title %}
+    404
+{% endblock %}
+{% block content %}
+<h1>404, Not Found</h1>
+{% endblock %}
