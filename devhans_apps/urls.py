@@ -26,4 +26,7 @@ urlpatterns = [
 
     #mailer
     path('mailer/', include('mailer.urls')),
+
+    #apis
+    path('api-auth/', include('rest_framework.urls'))
 ]

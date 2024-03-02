@@ -9,9 +9,15 @@
 {% block content %}
 
     {% for sender in senders %}
-        <div class="border border-success rounded text-success w-50 mb-4 p-2">
+        <div class="border border-success rounded text-success mb-4 p-2">
             <p>Sender tag: {{sender.name}}</p>
             <p>Sender email: {{sender.email}}</p>
+            <p>
+                API URL:
+               <span class="text-info">
+                   {{ base_url }}mailer/send_mail/{{user.id}}/{{sender.id}}=token=&lt;yourtokenhere&gt;
+               </span>
+            </p>
         </div>
     {%endfor%}
 

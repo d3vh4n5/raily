@@ -1,7 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponse, JsonResponse
 from .forms import SenderForm
 from .models import Sender
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.views.decorators.csrf import csrf_exempt
+import json
 
 # Create your views here.
 
@@ -48,6 +52,7 @@ def create_sender(request):
 def sender_detail(request, pk):
     # Obtener el objeto SenderM o devolver un error 404 si no existe
     sender = get_object_or_404(Sender, pk=pk)
+    
 
     if sender.user == request.user:
         # Renderizar el template sender_detail.html con el objeto SenderM
@@ -59,6 +64,49 @@ def sender_detail(request, pk):
 def senders_list(request):
     user = request.user
     queryset = Sender.objects.filter(user=user)
-    print(queryset)
 
-    return render(request, 'mailer/pages/senders_list.html', {'senders': queryset})
+    context = {
+        'senders': queryset,
+        'base_url' : 'http://localhost:8000/'
+
+    }
+
+    return render(request, 'mailer/pages/senders_list.html', context)
+
+@csrf_exempt
+def sendMail(request, uid, senderId):
+
+    requestToken = request.GET.get('token', None)
+    # requestToken = request.GET['token'] Así también lo obtengo pero no puedo validar
+
+    if requestToken == None:
+        return HttpResponse("Token incorrecto")
+    
+
+    if request.method == 'POST':
+        try:
+            user = User.objects.get(id=uid)
+            sender = Sender.objects.get(id=senderId)
+
+            print(requestToken)
+            print(user)
+            data = json.loads(request.body)
+
+
+            resp = {
+                'userName' : user.username,
+                'senderName' : sender.name,
+                "senderEmail": sender.email,
+                "senderPass": sender.password,
+                "mailTo" : data.get("mailTo"),
+                "subject" : data.get("subject"),
+                "content" : data.get("content"),
+            }
+
+            print(resp)
+
+            return JsonResponse(resp)
+        except Exception as e:
+            print('Hubo un error al obtener la información', e)
+    
+    return HttpResponse('Nothing to show')
