@@ -1,11 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, JsonResponse
 from .forms import SenderForm
-from .models import Sender
+from .models import Sender, ApiKey
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt
 import json
+import hashlib
+import datetime
 
 # Create your views here.
 
@@ -62,13 +64,21 @@ def sender_detail(request, pk):
 
 @login_required
 def senders_list(request):
+    try:
+        hasApiKey = ApiKey.objects.get(user=request.user)
+        api_key = hasApiKey.value
+    except Exception as e:
+        hasApiKey = False
+        api_key = '<yourapikeyhere>'
+        print("La key no se encontro, procedemos a crear una nueva")
+
     user = request.user
     queryset = Sender.objects.filter(user=user)
 
     context = {
         'senders': queryset,
-        'base_url' : 'http://localhost:8000/'
-
+        'base_url' : 'http://localhost:8000/',
+        'api_key' : api_key,
     }
 
     return render(request, 'mailer/pages/senders_list.html', context)
@@ -110,3 +120,36 @@ def sendMail(request, uid, senderId):
             print('Hubo un error al obtener la información', e)
     
     return HttpResponse('Nothing to show')
+
+@login_required
+def create_api_key(request):
+    try:
+        hasApiKey = ApiKey.objects.get(user=request.user)
+        print(hasApiKey)
+    except Exception as e:
+        hasApiKey = False
+        print("La key no se encontro, procedemos a crear una nueva")
+
+    if not hasApiKey:
+        date = str(datetime.datetime.now())
+        userName = str(request.user)
+        encodedVars = (userName + date).encode('utf8')
+        hash = hashlib.sha256(encodedVars).hexdigest()
+
+
+        try:
+            newApiKey = ApiKey(
+                user = request.user,
+                value = hash
+            )
+
+            newApiKey.save()
+
+            return redirect('senders_list')
+        
+        except Exception as e:
+            print(e)
+            return HttpResponse("Ocurrió un error al crear la api key, por favor comuníquese con el desarrollador.")
+
+    else:
+        return HttpResponse("Usuario ya tiene api key")

@@ -15,8 +15,11 @@
             <p>
                 API URL:
                <span class="text-info">
-                   {{ base_url }}mailer/send_mail/{{user.id}}/{{sender.id}}=token=&lt;yourtokenhere&gt;
+                   {{ base_url }}mailer/send_mail/{{user.id}}/{{sender.id}}?apikey={{api_key}}
                </span>
+                {% if api_key == '<yourapikeyhere>' %}
+                    <a class="btn btn-info text-white fw-bold" href="{% url 'create_api_key' %}">Create Key</a>
+                {% endif %}
             </p>
         </div>
     {%endfor%}

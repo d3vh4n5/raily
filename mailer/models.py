@@ -15,3 +15,12 @@ class Sender(models.Model):
     def __str__(self):
         return self.name
     
+class ApiKey(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='apiKey', verbose_name='User')
+    value = models.CharField(max_length=150, verbose_name='Value', blank=False, null=False)
+
+    class Meta:
+        verbose_name_plural = "Api Keys"
+
+    def __str__(self):
+        return f"{self.user} - {self.value}"
