@@ -8,6 +8,7 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 import hashlib
 import datetime
+from mailer.utils.automail import sendAutoMail
 
 # Create your views here.
 
@@ -86,38 +87,51 @@ def senders_list(request):
 @csrf_exempt
 def sendMail(request, uid, senderId):
 
-    requestToken = request.GET.get('token', None)
+    requestToken = request.GET.get('apikey', None)
     # requestToken = request.GET['token'] Así también lo obtengo pero no puedo validar
+    
+    # Verificar el token y en usuario en la db
 
     if requestToken == None:
-        return HttpResponse("Token incorrecto")
+        return HttpResponse("Debe incluir una api key para poder hacer uso de la api")
     
+    try:
+        userKey = ApiKey.objects.get(value=requestToken)
+        # print(userKey.user)
+        # print(request.user)
+        # Aqui en realidad se debe verificar una atenticación del usuario
+    except Exception as e:
+        return HttpResponse("Clave incorrecta")
 
     if request.method == 'POST':
         try:
             user = User.objects.get(id=uid)
             sender = Sender.objects.get(id=senderId)
 
-            print(requestToken)
-            print(user)
             data = json.loads(request.body)
-
 
             resp = {
                 'userName' : user.username,
-                'senderName' : sender.name,
                 "senderEmail": sender.email,
-                "senderPass": sender.password,
                 "mailTo" : data.get("mailTo"),
                 "subject" : data.get("subject"),
                 "content" : data.get("content"),
             }
 
-            print(resp)
+            # print(resp)
+
+            # sendAutoMail(
+            #     sender.email,
+            #     sender.password,
+            #     data.get("mailTo"),
+            #     data.get("subject"),
+            #     data.get("content")
+            # )
 
             return JsonResponse(resp)
         except Exception as e:
             print('Hubo un error al obtener la información', e)
+            return HttpResponse('Hubo un error al obtener la información')
     
     return HttpResponse('Nothing to show')
 
