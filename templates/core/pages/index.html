@@ -7,13 +7,54 @@
     Mis aplicaciones
 {% endblock %}
 {% block content %}
-    <h1>d3vh4n5 apps</h1>
-    <hr>
-    <h3>¡Bienvenidos!</h3>
-    <p>
-        Esta es una web personal, en la que combino varias aplicaciones de uso 
-        personal que están hechas con Python (django)
-    </p>
+    <section>
+
+        <h1>d3vh4n5 apps</h1>
+        <hr>
+        <h3>¡Bienvenidos!</h3>
+        <p>
+            Esta es una web personal, en la que combino varias aplicaciones de uso 
+            personal que están hechas con Python (django)
+        </p>
+    </section>
+    <section>
+        <div class="container d-flex justify-content-between">
+            <div class="card bg-dark border-success" style="width:18rem;">
+              <img src="{% static 'core/img/djlogo.png' %}" class="card-img-top" alt="...">
+              <div class="card-body">
+                <h5 class="card-title text-light">Record eye</h5>
+                <h6 class="card-subtitle mb-2 text-muted text-light">Contador de visitas</h6>
+                <p class="card-text text-light">
+                    Una api para contar la cantidad de visitas de un sitio, asi 
+                    también como obtener informacion de la localización de la 
+                    visita para generar estadísticas.
+                </p>
+              </div>
+            </div>
+            <div class="card" style="width:18rem;">
+              <img src="https://pixabay.com/get/gd172b375964266f6338939e8caa59f864ffbddb57cae250117d8a353c84183b2dff8b236eed516260eecb966d46ca6815b12502918177c7e7bf0649507e9308b_1280.png" class="card-img-top" alt="...">
+              <div class="card-body">
+                <h5 class="card-title">Mailer</h5>
+                <h6 class="card-subtitle mb-2 text-muted ">Automatizador de mails</h6>
+                <p class="card-text">
+                    Una api para contar automatizar mails, util para formularios 
+                    de contactos, devolucion de claves en proceso de registro o 
+                    para cualquier automatización de e-mails.
+                </p>
+              </div>
+            </div>
+            <div class="card" style="width:18rem;">
+              <img src="{% static 'core/img/djlogo.png' %}" class="card-img-top" alt="...">
+              <div class="card-body">
+                <h5 class="card-title">Raily</h5>
+                <h6 class="card-subtitle mb-2 text-muted ">Acortador de urls</h6>
+                <p class="card-text">
+                    Una web para acortar links y crear códigos qr de los mismos.
+                </p>
+              </div>
+            </div>
+        </div>
+    </section>
 
 
 {% endblock %}

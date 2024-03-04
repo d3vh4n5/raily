@@ -8,7 +8,7 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 import hashlib
 import datetime
-from mailer.utils.automail import sendAutoMail
+# from mailer.utils.automail import sendAutoMail
 
 # Create your views here.
 

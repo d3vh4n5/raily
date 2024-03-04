@@ -1,6 +1,7 @@
 from email.message import EmailMessage
 import ssl
 import smtplib
+from mailer.errors.MailSendingError import MailSendingError
 
 '''
 =========================
@@ -14,7 +15,7 @@ este funciona así nada mas con hotmail
 
 '''Hacer pestaña de instrucciones en la barra de menú'''
 
-def sendAutoMail(sender, ePass, reciever, subject, body):
+def send_auto_mail(sender, ePass, reciever, subject, body):
 
     email_emisor = sender
     email_pass= ePass
@@ -43,5 +44,4 @@ def sendAutoMail(sender, ePass, reciever, subject, body):
         print('Hecho!', 'Tu mensaje ha sido enviado con éxito')
         server.quit()
     except Exception as e:
-        print('Error', 'No se pudo enviar el mail')
-        print(e)
+        raise MailSendingError("Error al enviar el correo electrónico: {}".format(str(e)))

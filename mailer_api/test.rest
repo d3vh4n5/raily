@@ -1,7 +1,9 @@
+# Requiere la extención "REST Client"
+
 POST http://127.0.0.1:8000/mailer/api/login
 Content-Type: application/json
 
-{ "username": "api", "password" : "sasa2121" }
+{ "username": "hans", "password" : "sasa2121" }
 
 ###
 
@@ -25,3 +27,15 @@ Content-Type: application/json
 Authorization: Token e262fba6c9eb8be81e24119fc7f8555f554988a5
 
 { "variable" : "Foo"}
+###
+
+POST  http://127.0.0.1:8000/mailer/api/custom_mail_send
+Content-Type: application/json
+Authorization: Token 3ebc69310675797c97c5b55c247079cb9457984d
+
+{
+    "senderId" : 2,
+    "mailTo": "juanangelbasgall@hotmail.com",
+    "subject" : "Prueba7",
+    "content" : "Este es un mensaje de pruebas a ver si ahora no soy tan pelotudo y llega el mensaje"
+}

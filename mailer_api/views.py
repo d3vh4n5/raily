@@ -7,6 +7,9 @@ from rest_framework import status
 from rest_framework.authtoken.models import Token
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
+from mailer.utils.automail import send_auto_mail
+from mailer.models import Sender
+from mailer.errors.MailSendingError import MailSendingError
 
 
 
@@ -55,7 +58,7 @@ def signup(request):
 @permission_classes([IsAuthenticated])
 def test_token(request):
     if request.method == 'POST':
-        return Response({"resp" : "Cacona"})
+        return Response({"resp" : "todo ok"})
     return Response("passed for {}".format(request.user.email))
 
 
@@ -71,11 +74,48 @@ def test_token(request):
 
 
 
-@api_view(['POST', 'GET'])
-def prueba(request):
+@api_view(['POST'])
+@authentication_classes([SessionAuthentication, TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def custom_mail_send(request):
 
     if request.method == 'POST':
+        user = request.user
+        sender_id = request.data.get('senderId')
+        receiver = request.data.get('mailTo')
+        subject = request.data.get('subject')
+        body = request.data.get('content')
 
-        return Response({'message' : 'this is a message'})
-    
-    return Response({'message' : 'this is a message'})
+        if not all([sender_id, receiver, subject, body]):
+            return Response({'detail': 'Missing required parameters'}, status=400)
+
+        
+        try:
+            sender = Sender.objects.get(id=sender_id)
+            if sender.user_id != user.id:
+                return Response({"detail" : "Sender is invalid"}, status=status.HTTP_400_BAD_REQUEST)
+            
+            send_auto_mail(
+                sender.email,
+                sender.password,
+                request.data['mailTo'],
+                request.data['subject'],
+                request.data['content'],
+            )
+
+            return Response({"detail" : "Success"}, status=status.HTTP_200_OK)
+        except Sender.DoesNotExist:
+            return Response({"detail": "Sender not found"}, status=400)
+        except MailSendingError as e:
+            return Response({"detail": str(e)}, status=500)
+            
+        
+    return Response({'detail' : 'Bad request'}, status=400)
+
+
+@api_view(['POST'])
+@authentication_classes([SessionAuthentication, TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def server_mail_send(request):
+    # Este endpoint trabajaría con "resend" un servicio de mails
+    pass
