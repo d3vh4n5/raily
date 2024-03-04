@@ -10,5 +10,5 @@ urlpatterns = [
     # API
     path('send_mail/<int:uid>/<int:senderId>', views.sendMail, name='send_mail'),
     path('create_api_key/', views.create_api_key, name='create_api_key'),
-    # path('api/', include('mailer_api.urls')),
+    path('api/', include('mailer_api.urls')),
 ]

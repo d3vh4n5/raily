@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'mailer',
     'mailer_api',
     'rest_framework',
+    'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [

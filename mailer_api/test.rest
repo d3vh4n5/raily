@@ -1,0 +1,27 @@
+POST http://127.0.0.1:8000/mailer/api/login
+Content-Type: application/json
+
+{ "username": "api", "password" : "sasa2121" }
+
+###
+
+POST http://127.0.0.1:8000/mailer/api/signup
+Content-Type: application/json
+
+{ "username": "api", "password" : "sasa2121", "email" : "juanangelbasgall@hotmail.com" }
+
+###
+
+GET http://127.0.0.1:8000/mailer/api/test_token
+Content-Type: application/json
+Authorization: Token e262fba6c9eb8be81e24119fc7f8555f554988a5
+
+{ "variable" : "Foo"}
+
+###
+
+POST http://127.0.0.1:8000/mailer/api/test_token
+Content-Type: application/json
+Authorization: Token e262fba6c9eb8be81e24119fc7f8555f554988a5
+
+{ "variable" : "Foo"}
