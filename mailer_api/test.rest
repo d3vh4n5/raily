@@ -39,3 +39,17 @@ Authorization: Token 3ebc69310675797c97c5b55c247079cb9457984d
     "subject" : "Prueba7",
     "content" : "Este es un mensaje de pruebas a ver si ahora no soy tan pelotudo y llega el mensaje"
 }
+
+###
+
+POST  http://127.0.0.1:8000/mailer/api/resend_mail_send
+Content-Type: application/json
+Authorization: Token 3ebc69310675797c97c5b55c247079cb9457984d
+
+# Lamentablemente tiene que ir mi gmal al principio para que se envien los demás
+{
+    "senderAppName" : "Testy.com",
+    "mailTo": ["juanangelbasgall@gmail.com", "juanangelbasgall@hotmail.com"],
+    "subject" : "Python resend",
+    "content" : "Mensaje desde el resend en python."
+}

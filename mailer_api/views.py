@@ -10,8 +10,11 @@ from django.shortcuts import get_object_or_404
 from mailer.utils.automail import send_auto_mail
 from mailer.models import Sender
 from mailer.errors.MailSendingError import MailSendingError
+from dotenv import load_dotenv
+import os
+import resend
 
-
+load_dotenv()
 
 # https://www.youtube.com/watch?v=llrIu4Qsl7c&t=368s Auth con django
 
@@ -67,13 +70,6 @@ def test_token(request):
 
 
 
-
-
-
-
-
-
-
 @api_view(['POST'])
 @authentication_classes([SessionAuthentication, TokenAuthentication])
 @permission_classes([IsAuthenticated])
@@ -89,7 +85,6 @@ def custom_mail_send(request):
         if not all([sender_id, receiver, subject, body]):
             return Response({'detail': 'Missing required parameters'}, status=400)
 
-        
         try:
             sender = Sender.objects.get(id=sender_id)
             if sender.user_id != user.id:
@@ -108,14 +103,34 @@ def custom_mail_send(request):
             return Response({"detail": "Sender not found"}, status=400)
         except MailSendingError as e:
             return Response({"detail": str(e)}, status=500)
-            
-        
+                 
     return Response({'detail' : 'Bad request'}, status=400)
 
 
 @api_view(['POST'])
 @authentication_classes([SessionAuthentication, TokenAuthentication])
 @permission_classes([IsAuthenticated])
+def resend_mail_send(request):
+    resend.api_key = os.environ["RESEND_API_KEY"]
+
+    params = {
+        "from": f"devHans.apps <d3vh4n5-no-reply@resend.dev>",
+        "to": request.data['mailTo'],
+        "subject": request.data['subject'],
+        "html": request.data['content'],
+    }
+
+    try:
+        email = resend.Emails.send(params)
+        print(email)
+        return Response({"email" : email})
+    except Exception as e:
+        return Response({"detail": str(e)}, status=500)
+
+
+@api_view(['POST'])
+@authentication_classes([SessionAuthentication, TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def server_mail_send(request):
-    # Este endpoint trabajaría con "resend" un servicio de mails
+    # Este endpoint trabajaría con el smtp de django
     pass
