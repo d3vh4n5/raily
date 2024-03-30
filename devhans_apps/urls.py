@@ -23,10 +23,9 @@ urlpatterns = [
     # core
     path('', include('core.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
-
-    #mailer
     path('mailer/', include('mailer.urls')),
+    path('raily/', include('raily_api.urls')),
 
     #apis
-    path('api-auth/', include('rest_framework.urls'))
+    path('api-auth/', include('rest_framework.urls')),
 ]

@@ -1,0 +1,7 @@
+POST http://127.0.0.1:8000/raily/api/add_visit
+Content-Type: application/json
+Authorization: Token 3ebc69310675797c97c5b55c247079cb9457984d
+
+{
+    "origin": "test.rest"
+}
